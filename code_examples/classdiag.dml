@@ -1,0 +1,58 @@
+def rec0(arg):
+    arg depend arg
+    arg = rec($arg) 3
+    return arg
+
+def rec(arg):
+    arg depend arg
+    arg = rec0($arg) 3
+    return arg
+
+diagclass class_diagram:
+    class A:
+        public "A()"
+
+    exec "class_diagram_ver_1.png"
+
+    A4_empty = rec(A) 5
+
+    exec "class_diagram_ver_11.png"
+
+    A1, A2, A3 = fun1(A)
+
+    note A2:
+        "This is A2 class"
+
+    A4_empty2 = rec(A1) 20
+
+    A4_full = rec($A1) 2
+
+    exec "class_diagram_ver_2.png"
+
+    package CLASS isi:
+        A
+        A4_empty
+
+    note isi:
+        "Paczka jakas"
+
+    exec "class_diagram_ver_3.png"
+
+def fun1(arg):
+    class A1:
+        private "A1()"
+    A2, A3 = fun2(A1)
+    A1 aggregate A3
+
+    return A1, A2, A3
+
+def fun2(arg):
+    A3 = fun3()
+    arg implement A3
+    return arg, A3
+
+def fun3():
+    class A3:
+        protected "A3()"
+
+    return A3

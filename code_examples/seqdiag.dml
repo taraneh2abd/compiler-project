@@ -1,0 +1,11 @@
+diagseq seq_diagram:
+    block klient
+    block sklep
+
+    klient -> sklep
+    sklep -> klient
+
+    klient -> sklep labeled "zloz zamowienie"
+    sklep -> klient labeled "dziala"
+
+    exec "seq_diagram_ver_1.png"

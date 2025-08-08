@@ -1,0 +1,30 @@
+def fun():
+    class A:
+        public "A()"
+    class B:
+        public "B()"
+    A -> B
+    package CLASS a:
+        A
+        B
+    return a
+
+def fun1():
+    block A
+    package SEQ kk:
+        A
+    return kk
+
+def pack(p):
+    package CLASS P:
+        p
+    return P
+
+diagclass test:
+    x = fun()
+    class A:
+        "ups"
+    package CLASS p:
+        A
+    p = pack(p)
+    exec
