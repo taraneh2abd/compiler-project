@@ -8,7 +8,6 @@ else:
     from typing.io import TextIO
 
 
-
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2+")
@@ -284,8 +283,8 @@ class dUMLeLexer(Lexer):
     ruleNames = [ "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", 
                   "T__7", "T__8", "T__9", "T__10", "T__11", "T__12", "T__13", 
                   "T__14", "T__15", "T__16", "T__17", "T__18", "T__19", 
-                  "T__20", "T__21", "T__22", "PACKAGE_TYPE", "CLASS_TYPE", 
-                  "PARAM_TYPE", "CONNECTION_TYPE", "MODIFIER", "CR", "MODE", 
+                  "T__20", "T__21", "T__22", "PACKAGE_TYPE",
+                "CLASS_TYPE","PARAM_TYPE", "CONNECTION_TYPE", "MODIFIER", "CR", "MODE", 
                   "COM_SIGN", "DEEP_COPY", "BR", "SCOPE_NAME", "NAME", "NUMBER", 
                   "NL", "IND", "QUOTE", "ARROW", "TEXT" ]
 
