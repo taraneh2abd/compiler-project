@@ -1,28 +1,28 @@
-usecase kupowanie:
-    "Zlozenie zamowienia na frytki"
+usecase buying:
+    "Placing an order for fries"
 
 def fun(arg):
-    usecase zabawa:
-        "Fun czyli dobra zabawa"
-    arg -> zabawa
-    return arg, zabawa
+    usecase fun_activity:
+        "Fun, meaning good time"
+    arg -> fun_activity
+    return arg, fun_activity
 
 diagusecase usecase_diagram:
-    usecase opowiedz_kawal:
-        "Jestem piekarzem..."
+    usecase tell_joke:
+        "I am a baker..."
 
     actor konrad
     note konrad:
-        "Tak, Pawlik"
+        "Yes, Pawlik"
 
-    konrad -> opowiedz_kawal
+    konrad -> tell_joke
     exec "usecase_diagram_ver_1.png"
 
-    kupowanie = global&kupowanie
-    konrad -> kupowanie
+    buying = global&buying
+    konrad -> buying
 
     actor hania
-    hania -> opowiedz_kawal
-    gosia, zabawa = fun(hania)
+    hania -> tell_joke
+    gosia, fun_activity = fun(hania)
 
     exec "usecase_diagram_ver_2.png"
