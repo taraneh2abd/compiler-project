@@ -1,10 +1,10 @@
 # Language for Creating UML Diagrams
 
 **Authors:**  
-- fatemeh abdellahi 
 - yasaman haji  
-- mahdyar niavand  
 - shayan moulai
+- mahyar niavand  
+- fatemeh abdellahi 
 
 ---
 
@@ -22,15 +22,6 @@ After entering code, the user will get a generated UML diagram as an image.
 
 ---
 
-## Tools
-
-To create this language, we used following tools and libraries:
-
-- **ANTLR4**
-- **PlantUML**
-- **Python**
-
----
 
 ## Syntax
 
@@ -218,7 +209,7 @@ The `exec` command has several optional attributes:
 
 ## Usage
 
-To get your diagram in .png format run following commands:
+we used **Antlr4** and **plantuml** to create this language so first install requirements then To get your diagram in .png format run this commands:
 
 ```
 pip install -r requirements.txt
