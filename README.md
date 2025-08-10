@@ -15,8 +15,18 @@ Our language will be able to describe :
 - **class diagrams**
 - **sequence diagrams**
 - **use-case diagrams**  
-- **State Machine Diagram**  
-- **flowchart**  
+- **State Machine Diagram**  TODO
+- **flowchart**  TODO
+- **AST visualization**  TODO
+- **Theme**  TODO
+
+what is point of our compiler?
+
+- Ability to reuse and reference **global objects**, **shared theme** and **functions*** programmatically
+
+- Abstracts diagram generation with logic (functions, variables)
+ 
+- Lets you write diagrams as code with more modularity and **snappshot** in between the codes unlikly to plantuml.
 
 After entering code, the user will get a generated UML diagram as an image.  
 

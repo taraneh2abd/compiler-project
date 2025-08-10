@@ -20,8 +20,9 @@ def pack(p):
         p
     return P
 
-diagclass test:
+diagclass FuncClass:
     x = fun()
+# not the same A
     class A:
         "ups"
     package CLASS p:

@@ -1,11 +1,18 @@
-diagseq seq_diagram:
-    block client
-    block store
+block client
+block store
 
-    client -> store
-    store -> client
+diagseq seq_diagram_1:
+    c = global&client
+    s = global&store
+    c -> s
+    s -> c
+    exec "seq_diagram_ver_3.png"
 
-    client -> store labeled "place order"
-    store -> client labeled "works"
-
-    exec "seq_diagram_ver_1.png"
+diagseq seq_diagram_2:
+    c = global&client
+    s = global&store
+    c -> s labeled "place order"
+    s -> c labeled "works"
+    c -> s labeled "hello"
+    exec "seq_diagram_ver_4.png"
+    exec "seq_diagram_ver_5.png"

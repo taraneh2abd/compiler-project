@@ -1,0 +1,19 @@
+@startuml test
+package x {
+  class A {
+    + A()
+  }
+  class B {
+    + B()
+  }
+  A --> B
+}
+
+package p {
+  package p {
+    class A {
+      "ups"
+    }
+  }
+}
+@enduml

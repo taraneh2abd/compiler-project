@@ -14,7 +14,7 @@ diagclass class_diagram:
 
     exec "class_diagram_ver_1.png"
 
-    A4_empty = rec(A) 5
+    A4_empty = rec(A) 2
 
     exec "class_diagram_ver_11.png"
 
@@ -23,7 +23,7 @@ diagclass class_diagram:
     note A2:
         "This is A2 class"
 
-    A4_empty2 = rec(A1) 20
+    A4_empty2 = rec(A1) 3
 
     A4_full = rec($A1) 2
 
