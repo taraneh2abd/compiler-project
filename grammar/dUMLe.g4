@@ -28,7 +28,9 @@ instruction
     | fun_declaration
     | execution
     | loop
-    | connection;
+    | connection
+    | useTheme   
+    ;
 
 obj_declaration
     : class_declaration
@@ -38,6 +40,11 @@ obj_declaration
     | package_declaration
     | block
     | use_case;
+
+
+useTheme
+    : 'useTheme' BR+ NAME BR* NL
+    ;
 
 list_declaration
     : '[' BR* ((name | obj_access) BR* (',' BR* (name | obj_access))*)? BR* ']';

@@ -19,6 +19,7 @@ class ContentdUMLeListenerMode(Enum):
 
 
 class ContentdUMLeListener(dUMLeListener):
+    shared_themes = {}
     def __init__(self, register: Register, output_generator: OutputGenerator):
         # needed for both modes
         self.output_generator = output_generator
@@ -38,7 +39,7 @@ class ContentdUMLeListener(dUMLeListener):
 
         # flag for the mode
         self.mode = ContentdUMLeListenerMode.NOT_ACTIVE
-
+    
     def _enter_diag(self, ctx, diag_type: DiagType):
         self._enter_scope(ctx)
         self.is_in_diagram = True
@@ -248,7 +249,7 @@ class ContentdUMLeListener(dUMLeListener):
 
     def enterTheme(self, ctx: dUMLeParser.ThemeContext):
         theme = Theme(ctx)
-
+        ContentdUMLeListener.shared_themes[theme.name] = theme
         # add the theme to the proper place
         if self.mode is ContentdUMLeListenerMode.MAIN:
             if self.is_in_diagram:
@@ -257,6 +258,20 @@ class ContentdUMLeListener(dUMLeListener):
                 self.output_generator.global_objects[theme.name] = theme
         elif self.mode is ContentdUMLeListenerMode.FUNCTION:
             self._add_to_function_objects(theme)
+    def enterUseTheme(self, ctx: dUMLeParser.UseThemeContext):
+        theme_name = ctx.NAME().getText()
+        
+        if theme_name not in ContentdUMLeListener.shared_themes:
+            raise Exception(f"Theme {theme_name} not declared. Line: {ctx.start.line}")
+        
+        theme = ContentdUMLeListener.shared_themes[theme_name]
+        
+        # ذخیره به عنوان تم فعال فعلی
+        self.active_theme = theme
+        
+        # اگر الان داخل دیاگرام هستیم، مستقیم اعمال کن
+        if self.is_in_diagram:
+            self.output_generator.diagram_generators[self.current_diagram_name].add_object(theme)
 
 
     def _get_arg_copy_from_diagram(self, arg_names: List[str], is_deep_copy: List[bool]):

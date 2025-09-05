@@ -71,6 +71,15 @@ class dUMLeListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by dUMLeParser#useTheme.
+    def enterUseTheme(self, ctx:dUMLeParser.UseThemeContext):
+        pass
+
+    # Exit a parse tree produced by dUMLeParser#useTheme.
+    def exitUseTheme(self, ctx:dUMLeParser.UseThemeContext):
+        pass
+
+
     # Enter a parse tree produced by dUMLeParser#list_declaration.
     def enterList_declaration(self, ctx:dUMLeParser.List_declarationContext):
         pass
