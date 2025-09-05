@@ -1,0 +1,6 @@
+diagclass MyDiagram:
+    theme MyTheme:
+        backgroundcolor "pink"
+    class A:
+        public "A()"
+    exec "yas_theme2.png"

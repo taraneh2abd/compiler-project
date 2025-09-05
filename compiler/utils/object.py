@@ -128,7 +128,7 @@ class Theme(Object):
     def __init__(self, ctx: dUMLeParser.ThemeContext):
         super().__init__()
         self.values = []
-        self.name = str(ctx.NAME()[0])
+        self.name = str(ctx.NAME().getText())  # <-- fix here
 
         for i in range(len(ctx.PARAM_TYPE())):
             self.values.append((ctx.PARAM_TYPE()[i].getText(), ctx.TEXT()[i].getText().replace('"', '')))
@@ -138,6 +138,7 @@ class Theme(Object):
         for i in range(len(self.values)):
             res += 'skinparam ' + str(self.values[i][0]) + ' ' + str(self.values[i][1]) + '\n'
         return res
+
 
 
 class UseCase(Object):

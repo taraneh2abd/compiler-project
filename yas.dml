@@ -1,0 +1,24 @@
+def fun(arg):
+    usecase fun_activity:
+        "Fun, meaning good time"
+    arg -> fun_activity
+    return arg, fun_activity
+
+diagusecase usecase_diagram:
+    theme MyTheme:
+        backgroundcolor "pink"
+    usecase tell_joke:
+        "I am a baker..."
+
+    actor konrad
+    note konrad:
+        "Yes, Pawlik"
+
+    konrad -> tell_joke
+    exec "usecase_diagram_ver_1.png"
+
+    actor hania
+    hania -> tell_joke
+    gosia, fun_activity = fun(hania)
+
+    exec "usecase_diagram_ver_2.png"

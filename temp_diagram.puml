@@ -1,0 +1,11 @@
+
+@startuml
+skinparam fontcolor blue
+skinparam backgroundcolor lightyellow
+skinparam classFontSize 14
+skinparam classBorderColor black
+
+class A {
+  +A()
+}
+@enduml

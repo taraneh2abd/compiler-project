@@ -121,11 +121,11 @@ CLASS_TYPE
     | 'interface';
 
 PARAM_TYPE
-    : 'fontcolor'
+    : 'classFontColor'
     | 'backgroundcolor'
-    | 'fontsize'
-    | 'font'
-    | 'bordercolor';
+    | 'classFontSize'
+    | 'classBackgroundColor'
+    | 'classBorderColor';
 
 CONNECTION_TYPE
     :

@@ -2,7 +2,7 @@ from compiler.utils.output_generator import Mode
 from typing import List, Optional
 from enum import Enum, auto
 
-from compiler.utils.object import Object, Class, UseCase, Actor, Block, Package
+from compiler.utils.object import Object, Class, UseCase, Actor, Block, Package , Theme
 from compiler.utils.exceptions import ObjectNotDeclaredException
 
 
@@ -35,10 +35,26 @@ class DiagGenerator:
                 + "".join(obj.generate_connections(object_list_names) for obj in self.objects if obj.name in object_list_names)
 
     def _generate_all(self) -> str:
-        generated_objects = "".join(obj.generate() for obj in self.objects)
+        res = ""
+
+        # اول themeها را اضافه کن
+        for obj in self.objects:
+            if type(obj).__name__ == "Theme":  # استفاده از type برای جلوگیری از مشکل isinstance
+                res += obj._generate()
+
+        # سپس بقیه اشیا
+        for obj in self.objects:
+            if type(obj).__name__ != "Theme":
+                res += obj.generate()
+
+        # برای sequence ها
         if self.type == DiagType.SEQUENCE:
-            return generated_objects + self._generate_sequences()
-        return generated_objects + "".join(obj.generate_connections() for obj in self.objects)
+            res += self._generate_sequences()
+        else:
+            res += "".join(obj.generate_connections() for obj in self.objects if type(obj).__name__ != "Theme")
+
+        return res
+
 
     def _generate_sequences(self, object_list_names: List[str] | None = None):
         if object_list_names is None:

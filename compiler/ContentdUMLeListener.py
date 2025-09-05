@@ -9,6 +9,7 @@ from compiler.utils.register import Register
 from compiler.utils.object import Object, Actor, UseCase, Class, Connection, Block, Note, Package
 from compiler.utils.output_generator import OutputGenerator
 from compiler.utils.diagram_generator import DiagGenerator, DiagType
+from compiler.utils.object import Theme  # make sure Theme class exists
 
 
 class ContentdUMLeListenerMode(Enum):
@@ -241,8 +242,22 @@ class ContentdUMLeListener(dUMLeListener):
                         self.created_objects.remove(existing_object)
                         break
 
+    # def enterTheme(self, ctx: dUMLeParser.ThemeContext):
+# /////////////////////////////////
+        # raise Exception(f"Theme is not yet supported. Line: {ctx.stop.line}")
+
     def enterTheme(self, ctx: dUMLeParser.ThemeContext):
-        raise Exception(f"Theme is not yet supported. Line: {ctx.stop.line}")
+        theme = Theme(ctx)
+
+        # add the theme to the proper place
+        if self.mode is ContentdUMLeListenerMode.MAIN:
+            if self.is_in_diagram:
+                self.output_generator.diagram_generators[self.current_diagram_name].add_object(theme)
+            elif not self.is_in_function:  # global
+                self.output_generator.global_objects[theme.name] = theme
+        elif self.mode is ContentdUMLeListenerMode.FUNCTION:
+            self._add_to_function_objects(theme)
+
 
     def _get_arg_copy_from_diagram(self, arg_names: List[str], is_deep_copy: List[bool]):
         # get copy of the objects from diagram generator

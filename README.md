@@ -55,7 +55,7 @@ diagusecase diag_name:
 ```
 theme theme_name:
     fontcolor "red"
-    fontsize "8"
+    classFontSize "8"
     backgroundcolor "white"
 ```
 
