@@ -1,0 +1,25 @@
+کارایی که باید بکنیم:
+ast
+mode
+theme
+تغییر گرامر
+اضافه کردن مثال
+abstract
+interface
+
+
+رفتن به اینوارومنت:
+.venv\Scripts\activate
+
+ران کردن:
+python main.py yas.dml
+نتیجه توی ریزالت
+
+
+دستور برای ساخت گرامر:
+java -jar antlr4-4.9.2-complete.jar -Dlanguage=Python3 -o gen grammar\dUMLe.g4
+
+ورژن حتما باید
+4.9.2 باشه
+و جاوا نصب باشه
+
