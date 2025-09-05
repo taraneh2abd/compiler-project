@@ -1,4 +1,4 @@
-# Generated from /Users/hania/Desktop/komp22-dumle/grammar/dUMLe.g4 by ANTLR 4.9.2
+# Generated from grammar\dUMLe.g4 by ANTLR 4.9.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -716,12 +716,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitProgram" ):
                 listener.exitProgram(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitProgram" ):
-                return visitor.visitProgram(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -826,12 +820,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitDiagcreation" ):
                 listener.exitDiagcreation(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitDiagcreation" ):
-                return visitor.visitDiagcreation(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -915,12 +903,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitClass_diagram" ):
                 listener.exitClass_diagram(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitClass_diagram" ):
-                return visitor.visitClass_diagram(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1085,12 +1067,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitSeq_diagram" ):
                 listener.exitSeq_diagram(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitSeq_diagram" ):
-                return visitor.visitSeq_diagram(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1253,12 +1229,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitUse_case_diagram" ):
                 listener.exitUse_case_diagram(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitUse_case_diagram" ):
-                return visitor.visitUse_case_diagram(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1427,12 +1397,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitInstruction" ):
                 listener.exitInstruction(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitInstruction" ):
-                return visitor.visitInstruction(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1548,12 +1512,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitObj_declaration" ):
                 listener.exitObj_declaration(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitObj_declaration" ):
-                return visitor.visitObj_declaration(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1649,12 +1607,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitList_declaration" ):
                 listener.exitList_declaration(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitList_declaration" ):
-                return visitor.visitList_declaration(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -1796,12 +1748,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitList_access" ):
                 listener.exitList_access(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitList_access" ):
-                return visitor.visitList_access(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -1881,12 +1827,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitAssignment" ):
                 listener.exitAssignment(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitAssignment" ):
-                return visitor.visitAssignment(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2020,12 +1960,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitFun_declaration" ):
                 listener.exitFun_declaration(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFun_declaration" ):
-                return visitor.visitFun_declaration(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2240,12 +2174,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitFun_call" ):
                 listener.exitFun_call(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFun_call" ):
-                return visitor.visitFun_call(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2370,12 +2298,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitExecution" ):
                 listener.exitExecution(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExecution" ):
-                return visitor.visitExecution(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2564,12 +2486,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitLoop" ):
                 listener.exitLoop(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitLoop" ):
-                return visitor.visitLoop(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -2782,12 +2698,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitConnection" ):
                 listener.exitConnection(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitConnection" ):
-                return visitor.visitConnection(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -2961,12 +2871,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitObj_access" ):
                 listener.exitObj_access(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitObj_access" ):
-                return visitor.visitObj_access(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3046,12 +2950,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitClass_declaration" ):
                 listener.exitClass_declaration(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitClass_declaration" ):
-                return visitor.visitClass_declaration(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3188,12 +3086,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitClass_declaration_line" ):
                 listener.exitClass_declaration_line(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitClass_declaration_line" ):
-                return visitor.visitClass_declaration_line(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3327,12 +3219,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitNote" ):
                 listener.exitNote(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitNote" ):
-                return visitor.visitNote(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3505,12 +3391,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitActor" ):
                 listener.exitActor(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitActor" ):
-                return visitor.visitActor(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3628,12 +3508,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitTheme" ):
                 listener.exitTheme(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitTheme" ):
-                return visitor.visitTheme(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -3811,12 +3685,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitPackage_declaration" ):
                 listener.exitPackage_declaration(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitPackage_declaration" ):
-                return visitor.visitPackage_declaration(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -3978,12 +3846,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitArg_list" ):
                 listener.exitArg_list(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitArg_list" ):
-                return visitor.visitArg_list(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4068,12 +3930,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitArg_list_include_scope" ):
                 listener.exitArg_list_include_scope(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitArg_list_include_scope" ):
-                return visitor.visitArg_list_include_scope(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4168,12 +4024,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitBlock" ):
                 listener.exitBlock(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitBlock" ):
-                return visitor.visitBlock(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4290,12 +4140,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitUse_case" ):
                 listener.exitUse_case(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitUse_case" ):
-                return visitor.visitUse_case(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
@@ -4458,12 +4302,6 @@ class dUMLeParser ( Parser ):
             if hasattr( listener, "exitName" ):
                 listener.exitName(self)
 
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitName" ):
-                return visitor.visitName(self)
-            else:
-                return visitor.visitChildren(self)
-
 
 
 
@@ -4517,12 +4355,6 @@ class dUMLeParser ( Parser ):
         def exitRule(self, listener:ParseTreeListener):
             if hasattr( listener, "exitArg_name" ):
                 listener.exitArg_name(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitArg_name" ):
-                return visitor.visitArg_name(self)
-            else:
-                return visitor.visitChildren(self)
 
 
 
