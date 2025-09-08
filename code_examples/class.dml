@@ -1,0 +1,13 @@
+diagclass MyDiagram:
+    class Person:
+        public "Person(name, age)"
+        private "name: str"
+        private "age: int"
+        public "greet()"
+
+    class Student:
+        public "Student(name, age, student_id)"
+        private "student_id: int"
+        public "study()"
+
+    exec

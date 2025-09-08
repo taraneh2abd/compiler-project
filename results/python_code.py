@@ -1,112 +1,18 @@
-class A(object):
-    def __init__(self):
+class Person(object):
+    def __init__(self, name=None, age=None):
+        self.name = name
+        self.age = age
+    def Person(self, name, age):
         pass
-    def A(self):
-        pass
-
-
-class A(object):
-    def __init__(self):
-        pass
-    def A(self):
+    def greet(self):
         pass
 
-class A4_empty(object):
-    def __init__(self):
+class Student(object):
+    def __init__(self, student_id=None):
+        self.student_id = student_id
+    def Student(self, name, age, student_id):
         pass
-    def A(self):
-        pass
-
-
-class A(object):
-    def __init__(self):
-        pass
-    def A(self):
-        pass
-
-class A4_empty(object):
-    def __init__(self):
-        pass
-    def A(self):
-        pass
-
-class A1(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-class A2(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-class end(object):
-    pass
-
-class A3(object):
-    def __init__(self):
-        pass
-    def A3(self):
-        pass
-
-class A4_empty2(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-class A4_full(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-
-class A1(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-class A2(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-class end(object):
-    pass
-
-class A3(object):
-    def __init__(self):
-        pass
-    def A3(self):
-        pass
-
-class A4_empty2(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-class A4_full(object):
-    def __init__(self):
-        pass
-    def A1(self):
-        pass
-
-class A(object):
-    def __init__(self):
-        pass
-    def A(self):
-        pass
-
-class A4_empty(object):
-    def __init__(self):
-        pass
-    def A(self):
+    def study(self):
         pass
 
 
