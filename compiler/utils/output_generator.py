@@ -24,7 +24,8 @@ class OutputGenerator:
         self.global_objects = {}
         self.diagram_generators = {}
         self._functions = {}
-        self.generated_python_code = ""  # نگهداری کل کد پایتون
+        self.generated_python_code = ""  # concat of all python outputs
+        self.generated_cpp_code = ""     # concat of all C++ outputs
 
     def generate(self, diag_name: str, mode: Mode = None, object_list: List = None, output_filename: str = None) -> None:
         diagram_generator = self.diagram_generators[diag_name]
@@ -36,7 +37,7 @@ class OutputGenerator:
         if not os.path.exists("results/"):
             os.makedirs("results")
 
-        # نوشتن موقت فایل plantuml
+        # temporary plantuml file
         tmp_file = "results/output.txt"
         with open(tmp_file, 'w+', encoding='utf-8') as fp:
             fp.write(output)
@@ -50,21 +51,30 @@ class OutputGenerator:
 
         # generate Python code
         py_code = self._generate_python_from_plantuml(output)
-
-        if py_code.strip():  # فقط اگر کد پایتون تولید شده غیرخالی بود
+        if py_code.strip():
             self.generated_python_code += py_code + "\n\n"
             py_output_file = os.path.join("results", "python_code.py")
             with open(py_output_file, 'w+', encoding='utf-8') as fp:
                 fp.write(self.generated_python_code)
 
-        # حذف فایل موقت
+        # generate C++ code
+        cpp_code = self._generate_cpp_from_plantuml(output)
+        if cpp_code.strip():
+            self.generated_cpp_code += cpp_code + "\n\n"
+            cpp_output_file = os.path.join("results", "cpp_code.cpp")
+            with open(cpp_output_file, 'w+', encoding='utf-8') as fp:
+                fp.write(self.generated_cpp_code)
+
+        # remove tmp
         os.remove(tmp_file)
 
+    # ----------------------------
+    # Python generator (unchanged logic, cleaned names)
+    # ----------------------------
     def _generate_python_from_plantuml(self, plantuml_code: str) -> str:
         """Convert PlantUML class diagram subset to valid Python classes with relationships."""
         class_re = re.compile(r'class\s+(\w+)\s*(\{([^}]*)\})?', re.MULTILINE)
         inherit_re = re.compile(r'(\w+)\s*<\|--\s*(\w+)')
-
         assoc_re = re.compile(r'(\w+)\s+([o*]?)\-?\-?[->]?\s*(\w+)\s*(:\s*([^"\n]+))?', re.MULTILINE)
 
         def parse_body(body):
@@ -103,16 +113,10 @@ class OutputGenerator:
         # Parse associations/aggregations/compositions
         for m in assoc_re.finditer(plantuml_code):
             source = m.group(1)
-            rel_type = m.group(2) or ''  # 'o' for aggregation, '*' for composition, '' for association
+            rel_type = m.group(2) or ''  # 'o' aggregation, '*' composition, '' association
             target = m.group(3)
-            label = m.group(5)  # Capture the label if present
-
-            associations.append({
-                'source': source,
-                'target': target,
-                'type': rel_type,
-                'label': label
-            })
+            label = m.group(5)
+            associations.append({'source': source, 'target': target, 'type': rel_type, 'label': label})
 
         py_lines = []
 
@@ -170,37 +174,30 @@ class OutputGenerator:
                 target_var = target.lower()
 
                 if assoc['type'] in ['o', '*']:  # Aggregation/Composition
-                    # Add methods
                     py_lines.append(f"    def add_{target_var}(self, {target_var}_object):")
                     py_lines.append(f"        \"\"\"Add {target} to {name}'s collection.\"\"\"")
                     py_lines.append(f"        self._{target_var}_objects.append({target_var}_object)")
                     py_lines.append("")
-
                     py_lines.append(f"    def remove_{target_var}(self, {target_var}_object):")
                     py_lines.append(f"        \"\"\"Remove {target} from {name}'s collection.\"\"\"")
                     py_lines.append(f"        self._{target_var}_objects.remove({target_var}_object)")
                     py_lines.append("")
-
                     py_lines.append(f"    def get_{target_var}_list(self):")
                     py_lines.append(f"        \"\"\"Get all {target} objects.\"\"\"")
                     py_lines.append(f"        return self._{target_var}_objects")
                     py_lines.append("")
-
                     py_lines.append(f"    def clear_{target_var}_list(self):")
                     py_lines.append(f"        \"\"\"Clear all {target} objects.\"\"\"")
                     py_lines.append(f"        self._{target_var}_objects.clear()")
-
                 else:  # Simple association
                     py_lines.append(f"    def set_{target_var}(self, {target_var}_object):")
                     py_lines.append(f"        \"\"\"Set associated {target}.\"\"\"")
                     py_lines.append(f"        self._{target_var} = {target_var}_object")
                     py_lines.append("")
-
                     py_lines.append(f"    def get_{target_var}(self):")
                     py_lines.append(f"        \"\"\"Get associated {target}.\"\"\"")
                     py_lines.append(f"        return self._{target_var}")
                     py_lines.append("")
-
                     py_lines.append(f"    def clear_{target_var}(self):")
                     py_lines.append(f"        \"\"\"Clear associated {target}.\"\"\"")
                     py_lines.append(f"        self._{target_var} = None")
@@ -209,6 +206,190 @@ class OutputGenerator:
 
         return "\n".join(py_lines)
 
+    # ----------------------------
+    # C++ generator
+    # ----------------------------
+    def _map_type_to_cpp(self, type_str: str) -> str:
+        """Map simple UML/PlantUML type names to C++ types."""
+        if not type_str:
+            return "std::string"
+        t = type_str.strip().lower()
+        if t in ("int", "integer", "long", "short"):
+            return "int"
+        if t in ("float", "double", "real"):
+            return "double"
+        if t in ("bool", "boolean"):
+            return "bool"
+        if t in ("str", "string", "std::string", "name"):
+            return "std::string"
+        # fallback
+        return "std::string"
+
+    def _parse_field_and_type(self, field_text: str):
+        """Return (name, type_str) by parsing 'name: type' or just 'name'."""
+        parts = field_text.split(':', 1)
+        name = parts[0].strip()
+        type_str = parts[1].strip() if len(parts) > 1 else ""
+        name = re.sub(r'[^0-9a-zA-Z_]', '', name)
+        return name, type_str
+
+    def _generate_cpp_from_plantuml(self, plantuml_code: str) -> str:
+        """Convert PlantUML class diagram subset to reasonable C++ class definitions."""
+        class_re = re.compile(r'class\s+(\w+)\s*(\{([^}]*)\})?', re.MULTILINE)
+        inherit_re = re.compile(r'(\w+)\s*<\|--\s*(\w+)')
+        assoc_re = re.compile(r'(\w+)\s+([o*]?)\-?\-?[->]?\s*(\w+)\s*(:\s*([^"\n]+))?', re.MULTILINE)
+
+        def parse_body(body):
+            fields, methods = [], []
+            if not body:
+                return fields, methods
+            for line in body.splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                if '(' in line and ')' in line:
+                    methods.append(line)
+                else:
+                    fields.append(line)
+            return fields, methods
+
+        classes = {}
+        associations = []
+
+        # Parse classes
+        for m in class_re.finditer(plantuml_code):
+            name = m.group(1)
+            body = m.group(3) or ""
+            fields, methods = parse_body(body)
+            classes[name] = {"fields": fields, "methods": methods, "bases": []}
+
+        # Parse inheritance
+        for m in inherit_re.finditer(plantuml_code):
+            parent, child = m.group(1), m.group(2)
+            if child in classes:
+                classes[child]["bases"].append(parent)
+            else:
+                classes.setdefault(child, {"fields": [], "methods": [], "bases": [parent]})
+            classes.setdefault(parent, {"fields": [], "methods": [], "bases": []})
+
+        # Parse associations/aggregations/compositions
+        for m in assoc_re.finditer(plantuml_code):
+            source = m.group(1)
+            rel_type = m.group(2) or ''  # 'o' aggregation, '*' composition, '' association
+            target = m.group(3)
+            label = m.group(5)
+            associations.append({'source': source, 'target': target, 'type': rel_type, 'label': label})
+
+        # Prepare header includes and forward declarations
+        cpp_lines = []
+        cpp_lines.append('#include <string>')
+        cpp_lines.append('#include <vector>')
+        cpp_lines.append('')
+        # forward declare all classes to allow pointers in members
+        for cname in classes.keys():
+            cpp_lines.append(f"class {cname};")
+        cpp_lines.append('')
+        cpp_lines.append("using std::string;")
+        cpp_lines.append("using std::vector;")
+        cpp_lines.append("")
+
+        # Generate classes
+        for name, info in classes.items():
+            bases = ", ".join(f"public {b}" for b in info["bases"]) if info["bases"] else ""
+            header = f"class {name}" + (f" : {bases}" if bases else "") + " {"
+            cpp_lines.append(header)
+            cpp_lines.append("public:")
+
+            # collect typed fields for constructor
+            ctor_params = []
+            ctor_inits = []
+            member_lines = []
+
+            # regular fields
+            for f in info["fields"]:
+                fname, ftype = self._parse_field_and_type(f)
+                cpp_type = self._map_type_to_cpp(ftype)
+                # store member
+                member_lines.append(f"    {cpp_type} {fname};")
+                # add to ctor
+                ctor_params.append((cpp_type, fname))
+                ctor_inits.append(f"{fname}({fname})")
+
+            # associations where this class is source
+            class_associations = [a for a in associations if a['source'] == name]
+            for assoc in class_associations:
+                target = assoc['target']
+                if assoc['type'] in ['o', '*']:  # collection
+                    member_lines.append(f"    vector<{target}*> {target.lower()}_list;")
+                else:
+                    member_lines.append(f"    {target}* {target.lower()} = nullptr;")
+                # associations are not added to ctor params by default (could be)
+
+            # constructor
+            if ctor_params or info["bases"]:
+                # build signature
+                param_str = ", ".join(f"{t} {n}" for t, n in ctor_params)
+                cpp_lines.append(f"    {name}({param_str})")
+                # initializer list includes base ctor call if any bases
+                init_list = []
+                if info["bases"]:
+                    # we don't know base ctor args; call default base ctor
+                    for b in info["bases"]:
+                        init_list.append(f"{b}()")
+                init_list.extend(ctor_inits)
+                if init_list:
+                    cpp_lines.append("        : " + ", ".join(init_list))
+                cpp_lines.append("    {")
+                cpp_lines.append("        // constructor body")
+                cpp_lines.append("    }")
+            else:
+                cpp_lines.append(f"    {name}() {{}}")
+
+            # methods
+            for m in info["methods"]:
+                mname = re.sub(r'[^0-9a-zA-Z_]', '', m.split('(')[0].strip())
+                args = m[m.find('(') + 1: m.rfind(')')].strip()
+                # parse args to typed args where possible (arg: type)
+                cpp_args = []
+                if args:
+                    for arg in [a.strip() for a in args.split(',') if a.strip()]:
+                        # try parse "name: type" or "type name" or "name"
+                        if ':' in arg:
+                            aname, atype = [x.strip() for x in arg.split(':', 1)]
+                            cpp_type = self._map_type_to_cpp(atype)
+                            cpp_args.append(f"{cpp_type} {aname}")
+                        else:
+                            # unknown type => std::string
+                            cpp_args.append(f"std::string {re.sub(r'[^0-9a-zA-Z_]', '', arg)}")
+                cpp_lines.append(f"    void {mname}({', '.join(cpp_args)}) {{}}")
+
+            # association helper methods
+            for assoc in class_associations:
+                target = assoc['target']
+                tvar = target.lower()
+                if assoc['type'] in ['o', '*']:
+                    cpp_lines.append(f"    void add_{tvar}({target}* obj) {{ {tvar}_list.push_back(obj); }}")
+                    cpp_lines.append(f"    void remove_{tvar}({target}* obj) {{ /* remove from vector - implement */ }}")
+                    cpp_lines.append(f"    const vector<{target}*>& get_{tvar}_list() const {{ return {tvar}_list; }}")
+                else:
+                    cpp_lines.append(f"    void set_{tvar}({target}* obj) {{ {tvar} = obj; }}")
+                    cpp_lines.append(f"    {target}* get_{tvar}() const {{ return {tvar}; }}")
+
+            # members block
+            if member_lines:
+                cpp_lines.append("")
+                cpp_lines.append("private:")
+                for ml in member_lines:
+                    cpp_lines.append(ml)
+
+            cpp_lines.append("};")
+            cpp_lines.append("")  # blank line between classes
+
+        return "\n".join(cpp_lines)
+
+    # ----------------------------
+    # helpers and other methods (unchanged)
+    # ----------------------------
     def add_function(self, scope_name: str, function_name: str, function: Function) -> None:
         self._functions[scope_name + "&" + function_name] = function
 
