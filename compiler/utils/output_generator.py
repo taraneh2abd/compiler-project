@@ -61,9 +61,11 @@ class OutputGenerator:
         os.remove(tmp_file)
 
     def _generate_python_from_plantuml(self, plantuml_code: str) -> str:
-        """Convert PlantUML class diagram subset to valid Python classes."""
+        """Convert PlantUML class diagram subset to valid Python classes with relationships."""
         class_re = re.compile(r'class\s+(\w+)\s*(\{([^}]*)\})?', re.MULTILINE)
-        inherit_re = re.compile(r'(\w+)\s*<\|\-\-\s*(\w+)')
+        inherit_re = re.compile(r'(\w+)\s*<\|--\s*(\w+)')
+
+        assoc_re = re.compile(r'(\w+)\s+([o*]?)\-?\-?[->]?\s*(\w+)\s*(:\s*([^"\n]+))?', re.MULTILINE)
 
         def parse_body(body):
             fields, methods = [], []
@@ -80,12 +82,16 @@ class OutputGenerator:
             return fields, methods
 
         classes = {}
+        associations = []
+
+        # Parse classes
         for m in class_re.finditer(plantuml_code):
             name = m.group(1)
             body = m.group(3) or ""
             fields, methods = parse_body(body)
             classes[name] = {"fields": fields, "methods": methods, "bases": []}
 
+        # Parse inheritance
         for m in inherit_re.finditer(plantuml_code):
             parent, child = m.group(1), m.group(2)
             if child in classes:
@@ -94,38 +100,111 @@ class OutputGenerator:
                 classes.setdefault(child, {"fields": [], "methods": [], "bases": [parent]})
             classes.setdefault(parent, {"fields": [], "methods": [], "bases": []})
 
+        # Parse associations/aggregations/compositions
+        for m in assoc_re.finditer(plantuml_code):
+            source = m.group(1)
+            rel_type = m.group(2) or ''  # 'o' for aggregation, '*' for composition, '' for association
+            target = m.group(3)
+            label = m.group(5)  # Capture the label if present
+
+            associations.append({
+                'source': source,
+                'target': target,
+                'type': rel_type,
+                'label': label
+            })
+
         py_lines = []
+
+        # Generate class definitions
         for name, info in classes.items():
             bases = ", ".join(info["bases"]) if info["bases"] else "object"
             py_lines.append(f"class {name}({bases}):")
 
-            if info["fields"]:
-                params = []
-                assigns = []
-                for f in info["fields"]:
-                    # پاک کردن علامت‌های UML مثل + - # و کاراکترهای غیرمجاز
-                    fname = re.sub(r'[^0-9a-zA-Z_]', '', f.split(':')[0].strip())
-                    params.append(f"{fname}=None")
-                    assigns.append(f"        self.{fname} = {fname}")
-                py_lines.append(f"    def __init__(self, {', '.join(params)}):")
+            # Find associations where this class is the source
+            class_associations = [a for a in associations if a['source'] == name]
+
+            # Build __init__ parameters
+            init_params = []
+            init_assigns = []
+
+            # Add regular fields
+            for f in info["fields"]:
+                fname = re.sub(r'[^0-9a-zA-Z_]', '', f.split(':')[0].strip())
+                init_params.append(f"{fname}=None")
+                init_assigns.append(f"        self.{fname} = {fname}")
+
+            # Add association fields to __init__
+            for assoc in class_associations:
+                target = assoc['target']
+                if assoc['type'] in ['o', '*']:  # Aggregation/Composition (collection)
+                    init_assigns.append(f"        self._{target.lower()}_objects = []  # {assoc['type']}-- {target}")
+                else:  # Simple association (single reference)
+                    init_params.append(f"{target.lower()}=None")
+                    init_assigns.append(f"        self._{target.lower()} = {target.lower()}  # -- {target}")
+
+            # Generate __init__ method
+            if init_params or class_associations:
+                param_str = ", ".join(init_params)
+                py_lines.append(f"    def __init__(self{', ' + param_str if param_str else ''}):")
                 if info["bases"] and "object" not in info["bases"]:
                     py_lines.append("        super().__init__()")
-                py_lines += assigns if assigns else ["        pass"]
-            elif info["methods"]:
+                py_lines.extend(init_assigns if init_assigns else ["        pass"])
+            else:
                 py_lines.append("    def __init__(self):")
                 if info["bases"] and "object" not in info["bases"]:
                     py_lines.append("        super().__init__()")
                 py_lines.append("        pass")
-            else:
-                py_lines.append("    pass")
 
+            # Add regular methods
             for m in info["methods"]:
-                # پاک کردن علامت‌های UML و ساخت اسم معتبر پایتون
                 mname = re.sub(r'[^0-9a-zA-Z_]', '', m.split('(')[0].strip())
-                args = m[m.find('(')+1 : m.rfind(')')].strip()
+                args = m[m.find('(') + 1: m.rfind(')')].strip()
                 arglist = "self" if args == "" else "self, " + args
                 py_lines.append(f"    def {mname}({arglist}):")
                 py_lines.append("        pass")
+
+            # Add association methods
+            for assoc in class_associations:
+                target = assoc['target']
+                target_var = target.lower()
+
+                if assoc['type'] in ['o', '*']:  # Aggregation/Composition
+                    # Add methods
+                    py_lines.append(f"    def add_{target_var}(self, {target_var}_object):")
+                    py_lines.append(f"        \"\"\"Add {target} to {name}'s collection.\"\"\"")
+                    py_lines.append(f"        self._{target_var}_objects.append({target_var}_object)")
+                    py_lines.append("")
+
+                    py_lines.append(f"    def remove_{target_var}(self, {target_var}_object):")
+                    py_lines.append(f"        \"\"\"Remove {target} from {name}'s collection.\"\"\"")
+                    py_lines.append(f"        self._{target_var}_objects.remove({target_var}_object)")
+                    py_lines.append("")
+
+                    py_lines.append(f"    def get_{target_var}_list(self):")
+                    py_lines.append(f"        \"\"\"Get all {target} objects.\"\"\"")
+                    py_lines.append(f"        return self._{target_var}_objects")
+                    py_lines.append("")
+
+                    py_lines.append(f"    def clear_{target_var}_list(self):")
+                    py_lines.append(f"        \"\"\"Clear all {target} objects.\"\"\"")
+                    py_lines.append(f"        self._{target_var}_objects.clear()")
+
+                else:  # Simple association
+                    py_lines.append(f"    def set_{target_var}(self, {target_var}_object):")
+                    py_lines.append(f"        \"\"\"Set associated {target}.\"\"\"")
+                    py_lines.append(f"        self._{target_var} = {target_var}_object")
+                    py_lines.append("")
+
+                    py_lines.append(f"    def get_{target_var}(self):")
+                    py_lines.append(f"        \"\"\"Get associated {target}.\"\"\"")
+                    py_lines.append(f"        return self._{target_var}")
+                    py_lines.append("")
+
+                    py_lines.append(f"    def clear_{target_var}(self):")
+                    py_lines.append(f"        \"\"\"Clear associated {target}.\"\"\"")
+                    py_lines.append(f"        self._{target_var} = None")
+
             py_lines.append("")
 
         return "\n".join(py_lines)

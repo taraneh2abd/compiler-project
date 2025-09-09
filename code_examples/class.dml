@@ -1,13 +1,28 @@
-diagclass MyDiagram:
-    class Person:
-        public "Person(name, age)"
-        private "name: str"
-        private "age: int"
-        public "greet()"
+theme MyTheme:
+    backgroundcolor "yellow"
+    classFontColor "blue"
+    classFontSize "30"
+    classBorderColor "red"
 
-    class Student:
-        public "Student(name, age, student_id)"
-        private "student_id: int"
-        public "study()"
+diagclass MyDiagramB:
+    useTheme MyTheme
+    class A:
+        public "A(a1,a2)"
+        public "name: string"
+        private "id: int = 0"
+    class B:
+        public "B()"
+        private "B(b1,b2)"
+    class C:
+        public "C()"
+    class X:
+        private "X()"
+    class F:
+        public "F()"
 
-    exec
+    X aggregate B
+    A associate C
+    A aggregate X
+    F inherit A
+    exec "class.png"
+
