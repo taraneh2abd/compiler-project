@@ -37,17 +37,14 @@ class DiagGenerator:
     def _generate_all(self) -> str:
         res = ""
 
-        # اول themeها را اضافه کن
         for obj in self.objects:
-            if type(obj).__name__ == "Theme":  # استفاده از type برای جلوگیری از مشکل isinstance
+            if type(obj).__name__ == "Theme":
                 res += obj._generate()
 
-        # سپس بقیه اشیا
         for obj in self.objects:
             if type(obj).__name__ != "Theme":
                 res += obj.generate()
 
-        # برای sequence ها
         if self.type == DiagType.SEQUENCE:
             res += self._generate_sequences()
         else:

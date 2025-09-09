@@ -1,5 +1,3 @@
-# Generated from grammar\dUMLe.g4 by ANTLR 4.9.2
-# encoding: utf-8
 from antlr4 import *
 from io import StringIO
 import sys
@@ -734,7 +732,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.ProgramContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_program)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 76
@@ -922,7 +920,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Class_diagramContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_class_diagram)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 86
@@ -1085,7 +1083,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Seq_diagramContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_seq_diagram)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 135
@@ -1248,7 +1246,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Use_case_diagramContext(self, self._ctx, self.state)
         self.enterRule(localctx, 8, self.RULE_use_case_diagram)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 184
@@ -1628,7 +1626,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.UseThemeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 14, self.RULE_useTheme)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 253
@@ -1713,7 +1711,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.List_declarationContext(self, self._ctx, self.state)
         self.enterRule(localctx, 16, self.RULE_list_declaration)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 268
@@ -1933,7 +1931,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.AssignmentContext(self, self._ctx, self.state)
         self.enterRule(localctx, 20, self.RULE_assignment)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 321
@@ -2066,7 +2064,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Fun_declarationContext(self, self._ctx, self.state)
         self.enterRule(localctx, 22, self.RULE_fun_declaration)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 346
@@ -2279,7 +2277,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Fun_callContext(self, self._ctx, self.state)
         self.enterRule(localctx, 24, self.RULE_fun_call)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 430
@@ -2404,7 +2402,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.ExecutionContext(self, self._ctx, self.state)
         self.enterRule(localctx, 26, self.RULE_execution)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 461
@@ -2592,7 +2590,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.LoopContext(self, self._ctx, self.state)
         self.enterRule(localctx, 28, self.RULE_loop)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 506
@@ -2803,7 +2801,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.ConnectionContext(self, self._ctx, self.state)
         self.enterRule(localctx, 30, self.RULE_connection)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 568
@@ -3056,7 +3054,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Class_declarationContext(self, self._ctx, self.state)
         self.enterRule(localctx, 34, self.RULE_class_declaration)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 618
@@ -3191,7 +3189,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Class_declaration_lineContext(self, self._ctx, self.state)
         self.enterRule(localctx, 36, self.RULE_class_declaration_line)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 655
@@ -3325,7 +3323,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.NoteContext(self, self._ctx, self.state)
         self.enterRule(localctx, 38, self.RULE_note)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 684
@@ -3496,7 +3494,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.ActorContext(self, self._ctx, self.state)
         self.enterRule(localctx, 40, self.RULE_actor)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 741
@@ -3614,7 +3612,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.ThemeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 42, self.RULE_theme)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 764
@@ -3790,7 +3788,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Package_declarationContext(self, self._ctx, self.state)
         self.enterRule(localctx, 44, self.RULE_package_declaration)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 819
@@ -3951,7 +3949,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Arg_listContext(self, self._ctx, self.state)
         self.enterRule(localctx, 46, self.RULE_arg_list)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 874
@@ -4036,7 +4034,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Arg_list_include_scopeContext(self, self._ctx, self.state)
         self.enterRule(localctx, 48, self.RULE_arg_list_include_scope)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 914
@@ -4130,7 +4128,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.BlockContext(self, self._ctx, self.state)
         self.enterRule(localctx, 50, self.RULE_block)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 916
@@ -4246,7 +4244,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Use_caseContext(self, self._ctx, self.state)
         self.enterRule(localctx, 52, self.RULE_use_case)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 939
@@ -4407,7 +4405,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.NameContext(self, self._ctx, self.state)
         self.enterRule(localctx, 54, self.RULE_name)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 997
@@ -4461,7 +4459,7 @@ class dUMLeParser ( Parser ):
 
         localctx = dUMLeParser.Arg_nameContext(self, self._ctx, self.state)
         self.enterRule(localctx, 56, self.RULE_arg_name)
-        self._la = 0 # Token type
+        self._la = 0
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 1002

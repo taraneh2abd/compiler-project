@@ -128,7 +128,7 @@ class Theme(Object):
     def __init__(self, ctx: dUMLeParser.ThemeContext):
         super().__init__()
         self.values = []
-        self.name = str(ctx.NAME().getText())  # <-- fix here
+        self.name = str(ctx.NAME().getText())
 
         for i in range(len(ctx.PARAM_TYPE())):
             self.values.append((ctx.PARAM_TYPE()[i].getText(), ctx.TEXT()[i].getText().replace('"', '')))
