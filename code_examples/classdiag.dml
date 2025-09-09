@@ -1,40 +1,48 @@
+theme MyTheme:
+    backgroundcolor "cyan"
+    classFontColor "blue"
+    classFontSize "30"
+    classBorderColor "purple"
+
 def rec0(arg):
     arg depend arg
-    arg = rec($arg) 3
+    arg = rec($arg) 2
     return arg
 
 def rec(arg):
     arg depend arg
-    arg = rec0($arg) 3
+    arg = rec0($arg) 2
     return arg
 
 diagclass class_diagram:
-    class A:
-        public "A()"
+    useTheme MyTheme
+
+    class student:
+        public "student()"
 
     exec "class_diagram_ver_1.png"
 
-    A4_empty = rec(A) 2
+    student_cp = rec(student) 2
 
     exec "class_diagram_ver_11.png"
 
-    A1, A2, A3 = fun1(A)
+    A1, A2, A3 = fun1(student)
 
     note A2:
         "This is A2 class"
 
-    A4_empty2 = rec(A1) 3
+    student_cp2 = rec(A1) 3
 
     A4_full = rec($A1) 2
 
     exec "class_diagram_ver_2.png"
 
     package CLASS isi:
-        A
-        A4_empty
+        student
+        student_cp
 
     note isi:
-        "Paczka jakas"
+        "a package"
 
     exec "class_diagram_ver_3.png"
 

@@ -27,5 +27,5 @@ diagclass FuncClass:
         "ups"
     package CLASS p:
         A
-    p = pack(p)
+    packaging = pack(p)
     exec

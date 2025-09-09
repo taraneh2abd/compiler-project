@@ -11,18 +11,18 @@ diagusecase usecase_diagram:
     usecase tell_joke:
         "I am a baker..."
 
-    actor konrad
-    note konrad:
-        "Yes, Pawlik"
+    actor Ali
+    note Ali:
+        "Yes, mmad"
 
-    konrad -> tell_joke
+    Ali -> tell_joke
     exec "usecase_diagram_ver_1.png"
 
     buying = global&buying
-    konrad -> buying
+    Ali -> buying
 
-    actor hania
-    hania -> tell_joke
-    gosia, fun_activity = fun(hania)
+    actor hanie
+    hanie -> tell_joke
+    asghar, fun_activity = fun(hanie)
 
     exec "usecase_diagram_ver_2.png"
