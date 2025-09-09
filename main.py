@@ -16,6 +16,63 @@ from compiler.utils.error_message import ErrorMessage
 import hashlib
 from graphviz import Digraph
 
+
+from antlr4 import CommonTokenStream, FileStream
+from compiler.dUMLeLexer import dUMLeLexer
+from compiler.dUMLeParser import dUMLeParser
+from compiler.ASTBuilder import ASTBuilder
+from compiler.IndexingASTVisitor import IndexingASTVisitor
+from compiler.ContentASTVisitor import ContentASTVisitor
+from compiler.utils.register import Register
+from compiler.utils.output_generator import OutputGenerator
+from compiler.utils.error_message import ErrorMessage
+
+def execute_dumle(input_stream):
+    try:
+        lexer = dUMLeLexer(input_stream)
+        stream = CommonTokenStream(lexer)
+        parser = dUMLeParser(stream)
+        tree = parser.program()
+
+        if parser.getNumberOfSyntaxErrors() > 0:
+            print("Syntax errors detected.")
+            exit(-1000)
+
+        print("Building AST...")
+        ast_builder = ASTBuilder()
+        walker = ParseTreeWalker()
+        walker.walk(ast_builder, tree)
+        ast = ast_builder.get_ast()
+
+        print("Drawing AST with Graphviz...")
+        draw_ast(ast)
+
+        error = ErrorMessage([])
+        register = Register()
+        output_generator = OutputGenerator()
+
+        print("Indexing (AST)...")
+        indexing_visitor = IndexingASTVisitor(register, output_generator, error)
+        indexing_visitor.visit(ast)
+
+        if error.errors:
+            print("Fix the following errors:")
+            print(error.errors)
+            return
+
+        print("Executing code (AST)...")
+        content_visitor = ContentASTVisitor(register, output_generator)
+        content_visitor.visit(ast)
+
+        print("\nFinal Output:")
+        print(output_generator.generate()) 
+
+    except Exception as e:
+        print("Error message:", str(e))
+
+
+
+
 def draw_ast(ast):
     dot = Digraph(comment="AST")
 
@@ -29,7 +86,7 @@ def draw_ast(ast):
     def add_nodes_edges(node, parent_id=None):
         node_id = str(id(node))
         label = node.node_type if node.value is None else f"{node.node_type}: {node.value}"
-        color = get_color(node.node_type)  # رنگ خودکار
+        color = get_color(node.node_type)
         dot.node(node_id, label, style="filled", fillcolor=color)
         if parent_id:
             dot.edge(parent_id, node_id)
@@ -39,66 +96,6 @@ def draw_ast(ast):
     add_nodes_edges(ast)
     dot.render("results/ast_output", format="png", cleanup=True)
     print("AST graph saved as results/ast_output.png")
-
-
-def execute_dumle(input_stream):
-    try:
-        lexer = dUMLeLexer(input_stream)
-        stream = CommonTokenStream(lexer)
-        parser = dUMLeParser(stream)
-        tree = parser.program()
-
-        if parser.getNumberOfSyntaxErrors() > 0:
-            print("Syntax errors detected.")
-            exit(-1000)
-
-        walker = ParseTreeWalker()
-        error = ErrorMessage([])
-        register = Register()
-        output_generator = OutputGenerator()
-
-        print("Indexing...")
-        indexing_listener = IndexingdUMLeListener(register, output_generator, error)
-        walker.walk(indexing_listener, tree)
-
-        if error.errors:
-            print("Fix the following errors:")
-            print(error.errors)
-            return
-
-        print("Executing code...")
-        content_listener = ContentdUMLeListener(register, output_generator)
-        content_listener.set_global_listener()
-        walker.walk(content_listener, tree)
-
-        print("\nGenerating AST...")
-        ast_builder = ASTBuilder()
-        walker.walk(ast_builder, tree)
-        ast = ast_builder.get_ast()
-
-        # print("\nAST:")
-        # print(ast)
-
-        print("\nDrawing AST with Graphviz...")
-        draw_ast(ast)
-
-        # print("\nPost-order Traversal:")
-        post_order_list = []
-        def post_order(node):
-            for child in node.children:
-                post_order(child)
-            post_order_list.append(node.node_type)
-        post_order(ast)
-        # print(post_order_list)
-
-        # print("\nGenerating IL Code...")
-        # il_code = [f"IL_{token}" for token in post_order_list]
-        # with open("output.il", "w", encoding="utf-8") as f:
-        #     f.write("\n".join(il_code))
-        # print("IL code written to output.il")
-
-    except Exception as e:
-        print("Error message:", str(e))
 
 
 def main(argv):
