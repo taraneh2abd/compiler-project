@@ -1,10 +1,10 @@
 # Language for Creating UML Diagrams
 
 **Authors:**  
-- yasaman haji  
-- shayan moulai
-- mahyar niavand  
 - fatemeh abdellahi 
+- yasaman haji  
+- mahyar niavand  
+- shayan moulai
 
 ---
 
@@ -12,12 +12,12 @@
 
 The goal of our project is to create a simple language for describing basic UML diagrams.  
 Our language will be able to describe :
+- **AST visualization**  
 - **class diagrams**
 - **sequence diagrams**
 - **use-case diagrams**  
 - **State Machine Diagram**  TODO
 - **flowchart**  TODO
-- **AST visualization**  TODO
 - **Theme**  TODO
 
 what is point of our compiler?
@@ -27,6 +27,8 @@ what is point of our compiler?
 - Abstracts diagram generation with logic (functions, variables)
  
 - Lets you write diagrams as code with more modularity and **snappshot** in between the codes unlikly to plantuml.
+
+- converting python and cpp code
 
 After entering code, the user will get a generated UML diagram as an image.  
 
