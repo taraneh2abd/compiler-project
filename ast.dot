@@ -1,4 +1,0 @@
-digraph AST {
-node [shape=box, style="filled", color="lightblue"];
-node0 [label="ClassDiagram: MyDiagram"];
-}
